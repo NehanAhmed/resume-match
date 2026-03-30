@@ -7,8 +7,9 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Upload, FileText, Sparkles, AlertCircle, CheckCircle } from "lucide-react"
+import { Upload, FileText, Sparkles, AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { analyzeResume } from "@/lib/actions/analyze"
 
 export function UploadSection() {
   const router = useRouter()
@@ -16,6 +17,8 @@ export function UploadSection() {
   const [jobDescription, setJobDescription] = useState("")
   const [isDragging, setIsDragging] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+
+  const [error, setError] = useState<string | null>(null)
 
   const handleFileDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -53,21 +56,33 @@ export function UploadSection() {
     }
     
     setIsAnalyzing(true)
+    setError(null)
     
-    // Simulate analysis delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    // Generate a random match score between 45 and 95
-    const matchScore = Math.floor(Math.random() * (95 - 45 + 1)) + 45
-    
-    // Navigate to result page with data
-    const queryParams = new URLSearchParams({
-      score: matchScore.toString(),
-      fileName: resumeFile.name,
-      jobDescription: jobDescription.slice(0, 200) + (jobDescription.length > 200 ? '...' : '')
-    })
-    
-    router.push(`/result?${queryParams.toString()}`)
+    try {
+      const result = await analyzeResume({
+        resumeFile,
+        jobDescription,
+      })
+
+      if (!result.success) {
+        setError(result.error)
+        setIsAnalyzing(false)
+        return
+      }
+
+      if (result.isAuthenticated) {
+        // Auth user: navigate with analysis ID to fetch from DB
+        router.push(`/result?id=${result.analysisId}`)
+      } else {
+        // Unauth user: encode data in URL
+        const dataParam = encodeURIComponent(JSON.stringify(result.data))
+        router.push(`/result?data=${dataParam}`)
+      }
+    } catch (err) {
+      console.error("Analysis error:", err)
+      setError("An unexpected error occurred. Please try again.")
+      setIsAnalyzing(false)
+    }
   }
 
   return (
@@ -191,6 +206,12 @@ export function UploadSection() {
           </div>
           
           <div className="mt-8 text-center">
+            {error && (
+              <div className="mb-4 p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm max-w-md mx-auto">
+                {error}
+              </div>
+            )}
+            
             <Button
               size="lg"
               onClick={handleAnalyze}
@@ -200,7 +221,7 @@ export function UploadSection() {
               <span className="relative z-10 flex items-center gap-2">
                 {isAnalyzing ? (
                   <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Analyzing...
                   </>
                 ) : (

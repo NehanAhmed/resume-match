@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, integer, jsonb } from "drizzle-orm/pg-core";
 
 // Better Auth tables
 export const user = pgTable("user", {
@@ -49,4 +49,18 @@ export const verification = pgTable("verification", {
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
+});
+
+// Resume Analysis Results
+export const analysisResults = pgTable("analysis_results", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+  resumeFileName: text("resume_file_name").notNull(),
+  jobDescription: text("job_description").notNull(),
+  resumeText: text("resume_text").notNull(),
+  score: integer("score").notNull(),
+  missingKeywords: jsonb("missing_keywords").notNull().$type<string[]>(),
+  suggestions: jsonb("suggestions").notNull().$type<string[]>(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
 });
