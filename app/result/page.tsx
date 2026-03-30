@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { ArrowLeft, CheckCircle, XCircle, AlertCircle, FileText, Sparkles, Loader2 } from "lucide-react"
+import { ArrowLeft, CheckCircle, XCircle, AlertCircle, FileText, Sparkles, Loader2, Save, UserPlus } from "lucide-react"
 import Link from "next/link"
 import { Navbar } from "@/components/Navbar"
 import { getAnalysisResult } from "@/lib/actions/analyze"
@@ -26,9 +26,12 @@ function ResultContent() {
   const analysisId = searchParams.get("id")
   const encodedData = searchParams.get("data")
 
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
+
   useEffect(() => {
     // Unauth user: decode data from URL
     if (encodedData) {
+      setIsAuthenticated(false)
       try {
         const decodedData = JSON.parse(decodeURIComponent(encodedData))
         setData(decodedData)
@@ -211,7 +214,7 @@ function ResultContent() {
           </Card>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button size="lg" asChild>
               <Link href="/">Re-run the Magic</Link>
             </Button>
@@ -219,6 +222,37 @@ function ResultContent() {
               Download Full Report
             </Button>
           </div>
+
+          {/* Signup CTA for unauthenticated users */}
+          {!isAuthenticated && (
+            <Card className="p-6 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-primary/20">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex items-center gap-2 justify-center md:justify-start mb-2">
+                    <Save className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-semibold">Save Your Analysis</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Create an account to save this analysis and access it anytime.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Your results are currently temporary and will be lost if you leave this page.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button asChild>
+                    <Link href="/auth" className="flex items-center gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      Sign Up Free
+                    </Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link href="/auth">Sign In</Link>
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
       </section>
     </main>

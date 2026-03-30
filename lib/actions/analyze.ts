@@ -155,15 +155,6 @@ export async function analyzeResume(
   input: AnalyzeResumeInput
 ): Promise<AnalyzeResumeOutput> {
   try {
-    // Debug logging
-    console.log("Received file:", {
-      hasFile: !!input.resumeFile,
-      type: input.resumeFile?.type,
-      size: input.resumeFile?.size,
-      name: input.resumeFile?.name,
-      isFileInstance: input.resumeFile instanceof File,
-    });
-
     // Validate inputs
     if (!input.resumeFile) {
       return { success: false, error: "Resume file is required" };
@@ -207,20 +198,11 @@ export async function analyzeResume(
     const isAuthenticated = !!session?.user?.id;
 
     // Convert file to buffer
-    console.log("Converting file to buffer...", {
-      fileSize: input.resumeFile.size,
-      fileType: input.resumeFile.type,
-    });
-    
     const bytes = await input.resumeFile.arrayBuffer();
-    console.log("ArrayBuffer received:", bytes.byteLength, "bytes");
-    
     const buffer = Buffer.from(bytes);
-    console.log("Buffer created:", buffer.length, "bytes");
 
     // Extract text from PDF
     const resumeText = await extractPdfText(buffer);
-    console.log("PDF text extracted:", resumeText.length, "chars");
 
     if (!resumeText.trim()) {
       return { 
