@@ -44,13 +44,19 @@ function ThemeToggle() {
 export function Navbar() {
   const { data: session, isPending } = authClient.useSession()
   const isAuthenticated = !!session?.user && !isPending
+  const { theme } = useTheme()
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-            <Image src="/Resume-Match-Logos/white-transparent-logo.png" alt="Resume Check" width={128} height={32} />
+            <Image
+              src={theme === "dark" ? "/Resume-Match-Logos/white-transparent-logo.png" : "/Resume-Match-Logos/black-transparent-logo.png"}
+              alt="Resume Check"
+              width={128}
+              height={32}
+            />
           </Link>
         </div>
 

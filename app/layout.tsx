@@ -22,12 +22,27 @@ export const metadata: Metadata = {
   keywords: ["resume checker", "ATS scanner", "resume optimization", "AI resume analysis", "job match score"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://resumecheck.example.com"),
   openGraph: {
+    images:[
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Resume Check - AI-Powered Resume Analysis",
+      }
+    ],
     type: "website",
     locale: "en_US",
     siteName: "Resume Check",
   },
   twitter: {
-    
+    images:[
+      {
+        url: "/og(1).png",
+        width: 1200,
+        height: 630,
+        alt: "Resume Check - AI-Powered Resume Analysis",
+      }
+    ],
     card: "summary_large_image",
     site: "@resumecheck",
   },

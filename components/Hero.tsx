@@ -1,7 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, Target, Zap } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ArrowRight, Sparkles, Target, Zap, Play } from "lucide-react"
 import Link from "next/link"
 
 export function Hero() {
@@ -47,12 +55,30 @@ export function Hero() {
             </Link>
           </Button>
           
-          <Button variant="outline" size="lg" className="group">
-            <span className="flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              See Demo
-            </span>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="lg" className="group">
+                <span className="flex items-center gap-2">
+                  <Target className="h-4 w-4" />
+                  See Demo
+                </span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>See How It Works</DialogTitle>
+                <DialogDescription>
+                  Watch a quick demo of how Resume Match analyzes your resume against job descriptions.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <Play className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">Demo video coming soon</p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
