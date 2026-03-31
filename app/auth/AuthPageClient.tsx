@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { authClient } from "@/lib/auth-client";
 import { FileText, Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useTheme } from "next-themes";
 
 export default function AuthPageClient() {
   const router = useRouter();
@@ -30,7 +33,17 @@ export default function AuthPageClient() {
   const [signUpName, setSignUpName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
+ const { theme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Prevent hydration mismatch - render placeholder until mounted
+  const logoSrc = mounted
+    ? (resolvedTheme === "dark" ? "/Resume-Match-Logos/white-transparent-logo.png" : "/Resume-Match-Logos/black-transparent-logo.png")
+    : "/Resume-Match-Logos/white-transparent-logo.png" // Default for SSR
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
@@ -91,22 +104,23 @@ export default function AuthPageClient() {
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-sm">
-            <FileText className="h-5 w-5" />
-          </div>
-          <span className="text-xl font-semibold tracking-tight text-foreground">
-            Resume Match
-          </span>
-        </div>
+        <Link href="/" className="mx-auto  flex items-center gap-3 transition-opacity hover:opacity-80">
+            <Image
+              src={logoSrc}
+              alt="Resume Check"
+              width={128}
+              height={32}
+              priority
+            />
+          </Link>
 
         <Card className="border-border/50 shadow-lg shadow-primary/[0.03] backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-2xl font-semibold tracking-tight text-center">
-              Welcome back
+              Land More Interviews
             </CardTitle>
             <CardDescription className="text-center text-muted-foreground">
-              Sign in to analyze your resume and find your dream job
+              Sign in to save your analyses and track your resume improvements over time
             </CardDescription>
           </CardHeader>
 

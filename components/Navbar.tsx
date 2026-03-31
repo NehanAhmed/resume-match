@@ -44,7 +44,17 @@ function ThemeToggle() {
 export function Navbar() {
   const { data: session, isPending } = authClient.useSession()
   const isAuthenticated = !!session?.user && !isPending
-  const { theme } = useTheme()
+  const { theme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Prevent hydration mismatch - render placeholder until mounted
+  const logoSrc = mounted
+    ? (resolvedTheme === "dark" ? "/Resume-Match-Logos/white-transparent-logo.png" : "/Resume-Match-Logos/black-transparent-logo.png")
+    : "/Resume-Match-Logos/white-transparent-logo.png" // Default for SSR
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -52,10 +62,11 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
             <Image
-              src={theme === "dark" ? "/Resume-Match-Logos/white-transparent-logo.png" : "/Resume-Match-Logos/black-transparent-logo.png"}
+              src={logoSrc}
               alt="Resume Check"
               width={128}
               height={32}
+              priority
             />
           </Link>
         </div>

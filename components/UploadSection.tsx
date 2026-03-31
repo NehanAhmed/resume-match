@@ -86,15 +86,15 @@ export function UploadSection() {
   }
 
   return (
-    <section id="upload" className="py-20 bg-muted/30">
-      <div className="">
+    <section id="upload" className="py-12 sm:py-20 bg-muted/30">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-              Ready to Optimize Your Resume?
+              Get Your Resume Score in Seconds
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Upload your resume and paste the job description to get instant feedback on your match score.
+              Upload your resume and paste the job posting. Our AI compares them and tells you exactly how to improve your chances.
             </p>
           </div>
           
@@ -106,7 +106,7 @@ export function UploadSection() {
                 <div className="flex items-center gap-2 mb-4">
                   <FileText className="h-5 w-5 text-primary" />
                   <Label htmlFor="resume-upload" className="text-base font-semibold">
-                    Upload your resume
+                    Step 1: Upload Your Resume
                   </Label>
                 </div>
                 
@@ -156,7 +156,7 @@ export function UploadSection() {
                             {isDragging ? "Drop your resume here" : "Click to upload or drag and drop"}
                           </p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            PDF, DOC, DOCX (MAX. 10MB)
+                            PDF, DOC, or DOCX up to 10MB
                           </p>
                         </div>
                       </>
@@ -180,7 +180,7 @@ export function UploadSection() {
                 <div className="flex items-center gap-2 mb-4">
                   <FileText className="h-5 w-5 text-primary" />
                   <Label htmlFor="job-description" className="text-base font-semibold">
-                    Job Description
+                    Step 2: Paste the Job Description
                   </Label>
                 </div>
                 
@@ -189,23 +189,23 @@ export function UploadSection() {
                   placeholder="Paste your Job description here..."
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
-                  className="min-h-50 resize-none border-border/40 focus:border-primary transition-colors"
+                  className="min-h-[200px] resize-none border-border/40 focus:border-primary transition-colors"
                 />
                 
-                <div className="mt-4 flex items-center justify-between">
+                <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <p className="text-xs text-muted-foreground">
                     {jobDescription.length} characters
                   </p>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <AlertCircle className="h-3 w-3" />
-                    <span>Paste the full job description for best results</span>
+                    <AlertCircle className="h-3 w-3 shrink-0" />
+                    <span>Paste the complete job posting for best results</span>
                   </div>
                 </div>
               </div>
             </Card>
           </div>
           
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center px-4">
             {error && (
               <div className="mb-4 p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm max-w-md mx-auto">
                 {error}
@@ -227,7 +227,7 @@ export function UploadSection() {
                 ) : (
                   <>
                     <Sparkles className="h-4 w-4" />
-                    Run the Magic
+                    Get My Resume Score
                   </>
                 )}
               </span>
@@ -235,7 +235,7 @@ export function UploadSection() {
             </Button>
             
             <p className="mt-3 text-xs text-muted-foreground">
-              Analysis takes 10-15 seconds. We'll compare your resume against the job requirements and provide actionable insights.
+              Analysis takes 10-15 seconds. No signup required for your first scan.
             </p>
           </div>
         </div>
