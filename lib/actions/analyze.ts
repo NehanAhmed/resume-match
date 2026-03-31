@@ -21,8 +21,8 @@ async function extractPdfText(buffer: Buffer): Promise<string> {
   return new Promise((resolve, reject) => {
     const pdfParser = new PDFParser();
     
-    pdfParser.on("pdfParser_dataError", (errData: { parserError: Error }) => {
-      reject(new Error("Failed to parse PDF: " + errData.parserError.message));
+    pdfParser.on("pdfParser_dataError", (err) => {
+      reject(new Error("Failed to parse PDF: " + err.toString()));
     });
     
     pdfParser.on("pdfParser_dataReady", (pdfData: { Pages: Array<{ Texts: Array<{ R: Array<{ T: string }> }> }> }) => {
