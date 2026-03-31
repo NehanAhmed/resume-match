@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resume Match
+
+AI-powered resume analysis tool that helps job seekers optimize their resumes for ATS systems and land more interviews.
+
+![Resume Match](public/og.png)
+
+## Features
+
+- **AI-Powered Analysis** - Get instant feedback on how well your resume matches a job description
+- **Keyword Matching** - Identify missing keywords that ATS systems look for
+- **Match Score** - Receive a numerical score indicating fit percentage
+- **Actionable Suggestions** - Get specific recommendations to improve your resume
+- **Secure Authentication** - User accounts with Better-Auth
+- **Analysis History** - Save and revisit past resume analyses
+- **Dark/Light Theme** - Fully responsive design with theme support
+
+## Tech Stack
+
+- **Framework**: Next.js 16.2.1 (App Router)
+- **UI**: React 19.2.4, Tailwind CSS v4, shadcn/ui, Radix UI
+- **Database**: Neon PostgreSQL with Drizzle ORM
+- **Authentication**: Better-Auth
+- **AI**: OpenRouter API for resume analysis
+- **PDF Processing**: pdf-parse, pdfjs-dist
+- **Deployment**: Vercel-ready
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- PostgreSQL database (we use Neon)
+- OpenRouter API key
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in your values:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Random secret for auth encryption |
+| `BETTER_AUTH_URL` | Your app URL (http://localhost:3000 for dev) |
+| `OPENROUTER_API_KEY` | API key from openrouter.ai |
+| `NEXT_PUBLIC_APP_URL` | Public URL of your app |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+```bash
+# Install dependencies
+pnpm install
 
-To learn more about Next.js, take a look at the following resources:
+# Run database migrations
+pnpm db:migrate
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Start development server
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-## Deploy on Vercel
+### Build for Production
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm build
+pnpm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+app/
+├── page.tsx              # Home page with upload section
+├── layout.tsx            # Root layout with metadata
+├── globals.css           # Global styles
+├── api/                  # API routes
+│   └── analyze/          # Resume analysis endpoint
+│   └── auth/             # Better-Auth handlers
+components/
+├── ui/                   # shadcn/ui components
+├── Navbar.tsx            # Navigation bar
+├── Hero.tsx              # Landing hero section
+├── UploadSection.tsx     # Resume upload & analysis
+lib/
+├── auth-client.ts        # Auth client setup
+├── auth.ts               # Auth server setup
+├── db.ts                 # Database connection
+src/
+└── schema.ts             # Drizzle database schema
+public/
+└── Resume-Match-Logos/   # Logo assets
+```
+
+## Database Schema
+
+The app uses Drizzle ORM with the following main tables:
+
+- `user` - User accounts
+- `session` - Auth sessions
+- `analysis_results` - Stored resume analysis results
+
+Run migrations after schema changes:
+
+```bash
+pnpm db:generate   # Generate migration
+pnpm db:migrate   # Apply migration
+pnpm db:push      # Push schema directly (dev only)
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
+
+The `vercel.json` or project settings should include:
+- Build Command: `pnpm build`
+- Output Directory: `.next`
+- Install Command: `pnpm install`
+
+### Environment Variables for Production
+
+Make sure to update these for production:
+
+```env
+BETTER_AUTH_URL=https://your-domain.com
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+```
+
+## API Routes
+
+- `POST /api/analyze` - Analyze resume against job description
+- `GET|POST /api/auth/*` - Better-Auth authentication endpoints
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## License
+
+MIT License - feel free to use this project for personal or commercial purposes.
+
+## Support
+
+If you encounter any issues or have questions:
+- Open an issue on GitHub
+- Check existing issues for solutions
+
+---
+
+Built with Next.js, Tailwind CSS, and OpenRouter AI.
