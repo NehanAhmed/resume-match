@@ -6,6 +6,7 @@ import { Moon, Sun, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { authClient } from "@/lib/auth-client"
+import Image from "next/image"
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme()
@@ -49,10 +50,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-sm">
-              <span className="text-sm font-bold text-primary-foreground">RC</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight font-sans">Resume Check</span>
+            <Image src="/Resume-Match-Logos/white-transparent-logo.png" alt="Resume Check" width={128} height={32} />
           </Link>
         </div>
 
