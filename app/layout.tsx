@@ -76,6 +76,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <meta name="google-site-verification" content="aH5TsPkodTITeW3eq8pwVvahhPx0T_r-o369HejehVA" />
+      </head>
       <body className="max-w-full min-h-full">
         <ThemeProvider
           attribute="class"
