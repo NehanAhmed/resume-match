@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     images:[
       {
-        url: "/og.png",
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/og.png`,
         width: 1200,
         height: 630,
         alt: "Resume Check - AI-Powered Resume Analysis",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     images:[
       {
-        url: "/og(1).png",
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/og(1).png`,
         width: 1200,
         height: 630,
         alt: "Resume Check - AI-Powered Resume Analysis",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "/",
+    canonical: process.env.NEXT_PUBLIC_APP_URL || "https://resume-match-dev.vercel.app",
   },
   verification: {
     google: "your-google-verification-code",
